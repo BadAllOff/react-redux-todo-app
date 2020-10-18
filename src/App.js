@@ -1,28 +1,18 @@
-import React, { useReducer } from "react";
+import React from "react";
 
-import TodoList from "./TodoList";
-import Filter from "./Filter";
-import TodosLength from "./TodosLength";
+import TodoList from "./components/TodoList";
 
-const FilterReducer = function (state, action) {
-  switch (action.type) {
-    case "SET_FILTER":
-      return action.filter;
-    default:
-      return state;
-  }
-};
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
-  const [visibilityFilter, dispatch] = useReducer(FilterReducer, "SHOW_ALL");
-
   return (
-    <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
-      Todo application
-      <Filter dispatch={dispatch} />
-      <TodoList visibilityFilter={visibilityFilter} />
-      <TodosLength />
-    </div>
+    <Provider store={store}>
+      <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
+        Todo application
+        <TodoList />
+      </div>
+    </Provider>
   );
 }
 
