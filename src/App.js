@@ -1,44 +1,29 @@
 import React, { useReducer } from "react";
 
-function App() {
-  return (
-    <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
-      Todo application
-      <TodoList />
-    </div>
-  );
-}
+import TodoList from "./TodoList";
+import Filter from "./Filter";
+import TodosLength from "./TodosLength";
 
-export default App;
-
-const TodoReducer = function (state, action) {
+const FilterReducer = function (state, action) {
   switch (action.type) {
-    case "TOGGLE_TODO":
-      return state.map((todo, idx) =>
-        idx === action.idx ? { ...todo, completed: !todo.completed } : todo
-      );
+    case "SET_FILTER":
+      return action.filter;
     default:
       return state;
   }
 };
 
-const TodoList = () => {
-  const [todos, dispatch] = useReducer(TodoReducer, [
-    { text: "First Task", completed: false },
-  ]);
+function App() {
+  const [visibilityFilter, dispatch] = useReducer(FilterReducer, "SHOW_ALL");
 
   return (
-    <div>
-      {todos.map((todo, idx) => (
-        <label key={idx} className="block select-none">
-          <input
-            onChange={() => dispatch({ type: "TOGGLE_TODO", idx })}
-            type="checkbox"
-            checked={todo.completed}
-          />
-          {todo.text}
-        </label>
-      ))}
+    <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
+      Todo application
+      <Filter dispatch={dispatch} />
+      <TodoList visibilityFilter={visibilityFilter} />
+      <TodosLength />
     </div>
   );
-};
+}
+
+export default App;
